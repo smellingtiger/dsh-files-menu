@@ -57,7 +57,7 @@ New-Item -ItemType Junction `
 也可以从 GitHub 安装（无需先克隆）：
 
 ```sh
-dsh plugin --profile desktop add github:<owner>/dsh-files-menu
+dsh plugin --profile desktop add github:smellingtiger/dsh-files-menu
 ```
 
 或者直接使用本目录里的一键脚本（会自动判断 `$env:DSH_HOME`、备份 `package.json`、写配置）：

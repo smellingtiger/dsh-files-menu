@@ -46,5 +46,13 @@
       "platform": "web",
       "immediately": true
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smellingtiger/dsh-files-menu.git"
+  },
+  "homepage": "https://github.com/smellingtiger/dsh-files-menu#readme",
+  "bugs": {
+    "url": "https://github.com/smellingtiger/dsh-files-menu/issues"
   }
 }
