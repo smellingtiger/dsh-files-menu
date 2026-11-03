@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "File context menu",
+    "description": "Right-click a workspace file to copy its path, copy a relative path, or reveal it in the file manager."
+  }
+}

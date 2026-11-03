@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>dsh-files-menu harness</title>
+<style>
+  :root {
+    color-scheme: light;
+    --dsw-alias-label-primary: #1f2329;
+    --dsw-alias-label-secondary: #4a5058;
+    --dsw-alias-label-tertiary: #8a9099;
+    --dsw-alias-interactive-bg-hover: rgba(31, 35, 41, 0.06);
+    --dsw-alias-border-l1: rgba(31, 35, 41, 0.10);
+    --dsw-alias-border-l2: rgba(31, 35, 41, 0.08);
+    --dsw-alias-menu-icon: #5c6370;
+    --dsw-alias-bg-layer-3: #ffffff;
+    --dsw-menu-surface-fill: rgba(252, 252, 253, 0.92);
+    --dsw-menu-backdrop-filter: blur(20px) saturate(1.6);
+    --dsw-radius-md: 8px;
+    --dsw-radius-lg: 12px;
+    --dsw-elevation-prominent: 0 12px 32px rgba(15, 20, 40, 0.16), 0 0 0 0.5px rgba(15, 20, 40, 0.06);
+  }
+  html[data-dfm-dark] {
+    color-scheme: dark;
+    --dsw-alias-label-primary: #e7e9ee;
+    --dsw-alias-label-secondary: #b7bcc6;
+    --dsw-alias-label-tertiary: #8f95a1;
+    --dsw-alias-interactive-bg-hover: rgba(233, 236, 244, 0.10);
+    --dsw-alias-border-l1: rgba(233, 236, 244, 0.14);
+    --dsw-alias-border-l2: rgba(233, 236, 244, 0.12);
+    --dsw-alias-menu-icon: #a3a9b6;
+    --dsw-alias-bg-layer-3: #3a3c45;
+    --dsw-menu-surface-fill: rgba(45, 47, 55, 0.92);
+    --dsw-elevation-prominent: 0 12px 32px rgba(0, 0, 0, 0.45), 0 0 0 0.5px rgba(255, 255, 255, 0.06);
+  }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: radial-gradient(1200px 600px at 20% -10%, #e8ecff 0%, #f4f5f8 45%, #eef0f5 100%);
+    font-family: "Segoe UI", "Microsoft YaHei UI", system-ui, sans-serif;
+  }
+  html[data-dfm-dark] body {
+    background: radial-gradient(1200px 600px at 20% -10%, #1b2030 0%, #14161c 45%, #101217 100%);
+  }
+  .stage { display: flex; justify-content: flex-end; height: 100%; }
+  .pane {
+    width: 340px; height: 100%; box-sizing: border-box;
+    display: flex; flex-direction: column;
+    background: var(--dsw-menu-surface-fill);
+    border-left: 0.5px solid var(--dsw-alias-border-l1);
+    backdrop-filter: blur(18px);
+  }
+  .pane-title {
+    flex: none; padding: 12px 16px; font-size: 12px; letter-spacing: 0.04em;
+    color: var(--dsw-alias-label-tertiary);
+  }
+  [data-files-state="tree"] { display: flex; flex-direction: column; min-height: 0; flex: auto; }
+  .header {
+    flex: none; display: flex; align-items: center; gap: 6px; height: 38px;
+    padding: 0 16px; border-bottom: 0.5px solid var(--dsw-alias-border-l2);
+    font-size: 12px; color: var(--dsw-alias-label-secondary);
+  }
+  [data-files-body] { flex: auto; overflow: auto; padding: 8px 6px; }
+  ul { margin: 0; padding: 0; list-style: none; }
+  ul ul { padding-left: 18px; }
+  li > button, li > span {
+    display: flex; align-items: center; gap: 6px; width: 100%; box-sizing: border-box;
+    min-width: 0; padding: 5px 10px; border: 0; border-radius: 6px;
+    background: transparent; color: var(--dsw-alias-label-primary);
+    font: inherit; font-size: 13px; line-height: 20px; text-align: left; cursor: pointer;
+  }
+  li > button:hover { background: var(--dsw-alias-interactive-bg-hover); }
+  li > span { color: var(--dsw-alias-label-tertiary); cursor: default; }
+  .glyph { width: 14px; height: 14px; flex: none; border-radius: 3px; background: var(--dsw-alias-label-tertiary); opacity: 0.5; }
+  .hint {
+    position: fixed; left: 24px; top: 24px; max-width: 520px;
+    font-size: 12px; line-height: 20px; color: #4a5058;
+  }
+  .hint code { background: rgba(31, 35, 41, 0.07); padding: 1px 4px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="hint">
+  dsh-files-menu harness<br>
+  右键右侧文件树里的任意一行；菜单使用假 <code>--dsw-*</code> 令牌与假 ctx。
+</div>
+<div class="stage">
+  <div class="pane">
+    <div class="pane-title">工作区文件</div>
+    <div data-files-state="tree" data-files-root="E:\DSHProject\BG">
+      <div class="header"><span data-files-path="E:\DSHProject\BG">E:\DSHProject\BG</span></div>
+      <div data-files-body>
+        <ul>
+          <li data-files-entry="directory" data-files-path="E:\DSHProject\BG\refs">
+            <button type="button" aria-expanded="true" data-dfm-test="dir"><span class="glyph"></span><span>refs</span></button>
+            <ul>
+              <li data-files-entry="file" data-files-path="E:\DSHProject\BG\refs\README.md">
+                <button type="button" data-row-click="refs/README.md" data-dfm-test="nested"><span class="glyph"></span><span>README.md</span></button>
+              </li>
+              <li data-files-entry="directory" data-files-path="E:\DSHProject\BG\refs\deep">
+                <button type="button" aria-expanded="false"><span class="glyph"></span><span>deep folder name</span></button>
+              </li>
+            </ul>
+          </li>
+          <li data-files-entry="file" data-files-path="E:\DSHProject\BG\README.md">
+            <button type="button" data-row-click="README.md" data-dfm-test="file"><span class="glyph"></span><span>README.md</span></button>
+          </li>
+          <li data-files-entry="other" data-files-path="E:\DSHProject\BG\pipe">
+            <span aria-disabled="true"><span>pipe</span></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.__copied = [];
+  window.__revealed = [];
+  window.__opened = [];
+  window.__errors = [];
+
+  window.__ModuleLoader__ = {
+    load(entry) {
+      try {
+        if (entry.id !== 'dsh-files-menu') throw new Error('unexpected bundle id: ' + entry.id);
+        window.__plugin = entry.factory((name) => { throw new Error('unexpected require: ' + name); });
+      } catch (error) {
+        window.__errors.push(String(error && error.stack || error));
+      }
+    }
+  };
+
+  Object.defineProperty(navigator, 'clipboard', {
+    configurable: true,
+    value: { writeText: async (text) => { window.__copied.push(text); } }
+  });
+
+  document.addEventListener('click', (event) => {
+    const row = event.target instanceof Element ? event.target.closest('[data-row-click]') : null;
+    if (row !== null) window.__opened.push(row.getAttribute('data-row-click'));
+  });
+
+  window.__makeCtx = function makeCtx() {
+    const dictionaries = {};
+    const ctx = {
+      effects: [],
+      effect(fn) {
+        const dispose = fn();
+        ctx.effects.push(dispose);
+        return dispose;
+      },
+      locale: {
+        register(namespace, value) {
+          dictionaries[namespace] = value.zh;
+          return () => { delete dictionaries[namespace]; };
+        },
+        bind(namespace) {
+          return (key) => (dictionaries[namespace] && dictionaries[namespace][key]) || key;
+        }
+      },
+      remote: {
+        session: {
+          canOpenWorkspacePath: async () => ({ ok: true, value: true }),
+          openWorkspacePath: async (request) => {
+            window.__revealed.push(request);
+            return { ok: true, value: null };
+          }
+        }
+      }
+    };
+    return ctx;
+  };
+</script>
+<script src="../client.js"></script>
+<script>
+  try {
+    window.__ctx = window.__makeCtx();
+    window.__plugin.apply(window.__ctx);
+  } catch (error) {
+    window.__errors.push(String(error && error.stack || error));
+  }
+
+  // Screenshot modes open the menu right after `apply`, before the first paint:
+  // ?open=file|dir|corner, optional &dark=1.
+  (() => {
+    const params = new URLSearchParams(location.search);
+    if (params.has('bg')) document.body.style.background = '#ff0000';
+    if (params.has('dark')) document.documentElement.setAttribute('data-dfm-dark', '');
+    const debug = document.createElement('div');
+    debug.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:99999;background:#fff;color:#000;font:12px monospace;padding:4px 6px;border:1px solid #000';
+    debug.textContent = 'debug pending';
+    document.body.appendChild(debug);
+    if (!params.has('open')) return;
+    const mode = params.get('open');
+    const path = mode === 'dir' ? 'E:\\DSHProject\\BG\\refs' : 'E:\\DSHProject\\BG\\README.md';
+    const fire = () => {
+      const row = document.querySelector(`li[data-files-path="${CSS.escape(path)}"] > button`);
+      if (row === null) return;
+      const box = row.getBoundingClientRect();
+      const x = mode === 'corner' ? window.innerWidth - 2 : box.left + 24;
+      const y = mode === 'corner' ? window.innerHeight - 2 : box.top + box.height / 2;
+      row.dispatchEvent(new MouseEvent('contextmenu', {
+        bubbles: true, cancelable: true, button: 2, clientX: x, clientY: y
+      }));
+    };
+    fire();
+    if (!params.has('once')) window.setInterval(() => {
+      fire();
+      const menu = document.querySelector('[data-dfm-menu]');
+      const box = menu === null ? null : menu.getBoundingClientRect();
+      debug.textContent = `menu=${menu !== null} rect=${box === null ? 'none' : `${Math.round(box.left)},${Math.round(box.top)} ${Math.round(box.width)}x${Math.round(box.height)}`}`;
+    }, 150);
+    document.body.dataset.dfmShot = JSON.stringify({
+      mode,
+      rows: document.querySelectorAll('li[data-files-entry]').length,
+      menu: document.querySelector('[data-dfm-menu]') !== null,
+      errors: window.__errors
+    });
+  })();
+</script>
+<pre id="dfm-results" hidden></pre>
+<script>
+(() => {
+  const params = new URLSearchParams(location.search);
+  const rowOfPath = (path) => document.querySelector(`li[data-files-path="${CSS.escape(path)}"]`);
+  const rowButtonOfPath = (path) => rowOfPath(path)?.querySelector(':scope > button');
+  const FILE = 'E:\\DSHProject\\BG\\README.md';
+  const NESTED = 'E:\\DSHProject\\BG\\refs\\README.md';
+  const DIR = 'E:\\DSHProject\\BG\\refs';
+  const COLLAPSED_DIR = 'E:\\DSHProject\\BG\\refs\\deep';
+
+  function rightClick(element, point) {
+    const box = element.getBoundingClientRect();
+    const x = point?.x ?? box.left + 24;
+    const y = point?.y ?? box.top + box.height / 2;
+    element.dispatchEvent(new MouseEvent('contextmenu', {
+      bubbles: true, cancelable: true, button: 2, clientX: x, clientY: y
+    }));
+  }
+  const menu = () => document.querySelector('[data-dfm-menu]');
+  const labels = () => [...(menu()?.querySelectorAll('.dfm-label') ?? [])].map((node) => node.textContent);
+  const clickAction = (id) => menu()?.querySelector(`[data-dfm-action="${id}"]`)?.click();
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const press = (key, options = {}, target = document.body) => target.dispatchEvent(new KeyboardEvent('keydown', {
+    key, bubbles: true, cancelable: true, ...options
+  }));
+
+  window.__selftest = async () => {
+    const results = [];
+    const check = (name, ok, extra = '') => results.push(`${ok ? 'PASS' : 'FAIL'} ${name}${ok ? '' : ` :: ${extra}`}`);
+    const finish = () => {
+      document.getElementById('dfm-results').textContent = results.join('\n');
+      document.title = results.every((line) => line.startsWith('PASS')) ? 'SELFTEST-PASS' : 'SELFTEST-FAIL';
+    };
+
+    try {
+      check('bundle loaded and applied', window.__errors.length === 0, window.__errors.join(' | '));
+
+      // 1. File row: menu contents and order.
+      rightClick(rowButtonOfPath(FILE));
+      await sleep(20);
+      check('file menu opens', menu() !== null);
+      check('file menu is a menu role', menu()?.getAttribute('role') === 'menu');
+      check('file menu items', JSON.stringify(labels()) === JSON.stringify([
+        '打开', '复制文件地址', '复制相对路径', '复制文件名', '在资源管理器中显示'
+      ]), JSON.stringify(labels()));
+      check('file menu items are menuitems', [...menu()?.querySelectorAll('.dfm-item') ?? []].every((n) => n.getAttribute('role') === 'menuitem'));
+      check('row is highlighted', rowOfPath(FILE)?.hasAttribute('data-dfm-active') === true);
+
+      // 2. Copy actions.
+      clickAction('copy-path');
+      await sleep(20);
+      check('copy file path', window.__copied.at(-1) === FILE, JSON.stringify(window.__copied));
+      check('copy shows toast', document.querySelector('.dfm-toast')?.textContent === '已复制');
+      check('menu closed after action', menu() === null);
+      check('highlight cleared', rowOfPath(FILE)?.hasAttribute('data-dfm-active') === false);
+
+      rightClick(rowButtonOfPath(NESTED));
+      await sleep(20);
+      clickAction('copy-relative');
+      await sleep(20);
+      check('copy nested relative path', window.__copied.at(-1) === 'refs/README.md', JSON.stringify(window.__copied));
+
+      rightClick(rowButtonOfPath(FILE));
+      await sleep(20);
+      clickAction('copy-name');
+      await sleep(20);
+      check('copy file name', window.__copied.at(-1) === 'README.md', JSON.stringify(window.__copied));
+
+      // 3. Reveal / open on desktop.
+      rightClick(rowButtonOfPath(FILE));
+      await sleep(20);
+      clickAction('reveal');
+      await sleep(20);
+      check('reveal passes path and reveal action',
+        JSON.stringify(window.__revealed.at(-1)) === JSON.stringify({ path: FILE, action: 'reveal' }),
+        JSON.stringify(window.__revealed));
+
+      // 4. Open action clicks the row.
+      rightClick(rowButtonOfPath(FILE));
+      await sleep(20);
+      clickAction('open');
+      await sleep(20);
+      check('open clicks the row', window.__opened.at(-1) === 'README.md', JSON.stringify(window.__opened));
+
+      // 5. Directory rows.
+      rightClick(rowButtonOfPath(DIR));
+      await sleep(20);
+      check('expanded directory menu', JSON.stringify(labels()) === JSON.stringify([
+        '折叠文件夹', '复制文件夹地址', '复制相对路径', '复制文件夹名', '在资源管理器中打开'
+      ]), JSON.stringify(labels()));
+      clickAction('copy-path');
+      await sleep(20);
+      check('copy folder path', window.__copied.at(-1) === DIR, JSON.stringify(window.__copied));
+
+      rightClick(rowButtonOfPath(COLLAPSED_DIR));
+      await sleep(20);
+      check('collapsed directory offers expand', labels()[0] === '展开文件夹', JSON.stringify(labels()));
+      clickAction('open-directory');
+      await sleep(20);
+      check('open directory passes path only',
+        JSON.stringify(window.__revealed.at(-1)) === JSON.stringify({ path: COLLAPSED_DIR }),
+        JSON.stringify(window.__revealed));
+
+      // 6. Nothing happens outside rows that the plugin owns.
+      const before = menu();
+      rightClick(document.querySelector('.header [data-files-path]'));
+      await sleep(20);
+      check('header right-click is ignored', menu() === before);
+      rightClick(rowOfPath('E:\\DSHProject\\BG\\pipe'));
+      await sleep(20);
+      check('other row right-click is ignored', menu() === before);
+
+      // 7. Dismissal: Escape, outside pointer, scroll.
+      rightClick(rowButtonOfPath(FILE));
+      await sleep(20);
+      press('Escape');
+      await sleep(20);
+      check('escape closes the menu', menu() === null);
+      check('escape restores row focus', document.activeElement === rowButtonOfPath(FILE));
+
+      rightClick(rowButtonOfPath(FILE));
+      await sleep(20);
+      document.body.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, cancelable: true }));
+      await sleep(20);
+      check('outside pointer closes the menu', menu() === null);
+
+      rightClick(rowButtonOfPath(FILE));
+      await sleep(20);
+      document.querySelector('[data-files-body]').dispatchEvent(new Event('scroll', { bubbles: true }));
+      await sleep(20);
+      check('scroll closes the menu', menu() === null);
+
+      // 8. Keyboard opening and navigation.
+      rowButtonOfPath(FILE).focus();
+      press('F10', { shiftKey: true }, rowButtonOfPath(FILE));
+      await sleep(20);
+      check('shift+F10 opens the menu', menu() !== null);
+      check('first item receives focus', document.activeElement?.dataset.dfmAction === 'open');
+      press('ArrowDown');
+      await sleep(10);
+      check('arrow down moves focus', document.activeElement?.dataset.dfmAction === 'copy-path');
+      press('ArrowUp');
+      await sleep(10);
+      check('arrow up moves focus back', document.activeElement?.dataset.dfmAction === 'open');
+      press('Escape');
+      await sleep(20);
+      check('escape closes the keyboard menu', menu() === null);
+
+      // 9. Placement stays inside the viewport at the bottom-right corner.
+      rightClick(rowButtonOfPath(FILE), { x: window.innerWidth - 2, y: window.innerHeight - 2 });
+      await sleep(20);
+      const box = menu()?.getBoundingClientRect();
+      check('menu is clamped to the viewport',
+        box !== undefined && box.left >= 0 && box.top >= 0 &&
+        box.right <= window.innerWidth && box.bottom <= window.innerHeight,
+        JSON.stringify(box));
+      press('Escape');
+      await sleep(20);
+
+      // 10. Disposal removes every listener and the style tag.
+      window.__ctx.effects.forEach((dispose) => { if (typeof dispose === 'function') dispose(); });
+      rightClick(rowButtonOfPath(FILE));
+      await sleep(20);
+      check('disposing the plugin removes the menu', menu() === null);
+      check('disposing the plugin removes its styles', document.querySelector('style[data-dfm-style]') === null);
+    } catch (error) {
+      results.push(`FAIL selftest crashed :: ${String(error && error.stack || error)}`);
+    }
+    finish();
+  };
+
+  // Screenshot modes: ?open=file|dir|corner, optional &dark=1.
+  window.addEventListener('load', () => {
+    if (params.has('dark')) document.documentElement.setAttribute('data-dfm-dark', '');
+    try {
+      document.body.dataset.dfmDebug = JSON.stringify({
+        search: location.search,
+        open: params.get('open'),
+        rows: document.querySelectorAll('li[data-files-entry]').length,
+        button: rowButtonOfPath(FILE) !== null
+      });
+    } catch (error) {
+      document.body.dataset.dfmDebug = 'debug-failed: ' + String(error);
+    }
+    if (params.has('open')) {
+      const mode = params.get('open');
+      const fire = () => {
+        if (mode === 'corner') rightClick(rowButtonOfPath(FILE), { x: window.innerWidth - 2, y: window.innerHeight - 2 });
+        else if (mode === 'dir') rightClick(rowButtonOfPath(DIR));
+        else rightClick(rowButtonOfPath(FILE));
+      };
+      // Headless Shell blurs the window after load, which dismisses the menu;
+      // keep re-opening it so screenshots and DOM dumps capture the open state.
+      fire();
+      window.setInterval(fire, 120);
+    }
+    if (params.has('selftest')) window.__selftest();
+  });
+})();
+</script>
+</body>
+</html>

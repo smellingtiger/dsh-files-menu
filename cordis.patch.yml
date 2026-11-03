@@ -1,0 +1,6 @@
+# dsh-files-menu bundle: one client-only row. The feature lives in ./client.js;
+# the Host half registers nothing, but the row must exist so the Web client
+# serves and activates the bundle.
+- insert:
+    - id: dsh-files-menu
+      name: dsh-files-menu

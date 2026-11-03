@@ -1,0 +1,50 @@
+{
+  "name": "dsh-files-menu",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Right-click menu for the DSH workspace file tree: copy file path, copy relative path, copy name, reveal in the file manager",
+  "license": "MIT",
+  "author": "yyf",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "context-menu",
+    "file-tree",
+    "sidebar",
+    "copy-path"
+  ],
+  "scripts": {
+    "test": "node test/verify.mjs"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./screenshots.json": "./screenshots.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "assets/icon-180.png",
+    "assets/screenshots/*.png",
+    "screenshots.json",
+    "README.md",
+    "LICENSE",
+    "install.ps1",
+    "uninstall.ps1"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  }
+}

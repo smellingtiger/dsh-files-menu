@@ -1,0 +1,6 @@
+node_modules/
+test/out/
+*.bak
+*.zip
+*.tgz
+.DS_Store
