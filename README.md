@@ -38,6 +38,13 @@
 ## 安装
 
 收录到插件市场后，可以直接在 DSH 的 **插件 → 发现** 里搜索 `dsh-files-menu` 一键安装。
+
+插件也已发布到 npm（`dsh-files-menu@1.0.0`），可以按包名安装，版本可追溯：
+
+```sh
+dsh plugin --profile desktop add dsh-files-menu
+```
+
 在那之前（或不想用市场）：
 
 在 DSH 的 profile 目录里建一个联结，并把这个包登记为 bundle。以桌面版 profile
